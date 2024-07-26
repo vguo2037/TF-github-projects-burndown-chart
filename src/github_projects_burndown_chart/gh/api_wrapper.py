@@ -11,8 +11,6 @@ from config import config, secrets
 from .project import Project, ProjectV1, ProjectV2
 from .queries import OrganizationProject, OrganizationProjectV2, RepositoryProject, RepositoryProjectV2
 
-from pprint import pprint
-
 # Set up logging
 __logger = logging.getLogger(__name__)
 __ch = logging.StreamHandler()
@@ -52,10 +50,8 @@ def get_project_v2(project_type) -> Project:
 
     query_sprint = config['settings'].get('sprint')
     if query_sprint is not None:
-        print("----FILTER BY SPRINT----")
         all_items = project_data['items']['nodes']
         project_data['items']['nodes'] = filter(lambda i: i.get('sprint') and i.get('sprint')['title'] == query_sprint, all_items)
-        pprint(project_data)
 
     page_info = project_data['items']['pageInfo']
     while page_info['hasNextPage']:
