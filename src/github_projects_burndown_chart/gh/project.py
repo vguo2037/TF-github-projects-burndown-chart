@@ -60,6 +60,7 @@ class Column:
 class Card:
     def __init__(self, card_data):
         self.points = self.__parse_points(card_data)
+        self.sprint = self.__parse_sprint(card_data)
 
         card_data = card_data['content'] if card_data['content'] else card_data
         self.created: datetime = self.__parse_createdAt(card_data)
@@ -94,3 +95,13 @@ class Card:
             card_points = points_label.get('number')
 
         return card_points
+
+    def __parse_sprint(self, card_data) -> int:
+
+        sprint_label = card_data.get('sprint')
+        if not sprint_label:
+            card_sprint = None
+        else:
+            card_sprint = sprint_label.get('title')
+
+        return card_sprint

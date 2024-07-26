@@ -4,7 +4,6 @@ from gh.project import *
 from util.dates import TODAY_UTC, date_range
 from util.calculators import *
 
-
 class ProjectStats():
 
     def __init__(self, project: Project, start_date: datetime, end_date: datetime):

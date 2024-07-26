@@ -26,6 +26,11 @@ query OrganizationProject($organization_name: String!, $project_number: Int!, $l
               number
             }
           }
+          sprint: fieldValueByName(name: "Sprint") {
+            ... on ProjectV2ItemFieldIterationValue {
+              title
+            }
+          }
           content {
             ...on Issue {
               title
