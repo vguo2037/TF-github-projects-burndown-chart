@@ -1,5 +1,6 @@
 import logging
 import os
+import pprint
 import requests
 from datetime import date
 import hashlib
@@ -41,6 +42,9 @@ def get_organization_project() -> Project:
 def get_project_v2(project_type) -> Project:
     query = __project_v2_queries[project_type]
     query_variables = config['query_variables'].copy()
+
+    query_variables['points_label'] = config['settings'].get('points_label')
+
     query_response = gh_api_query(query, query_variables)
     project_data = query_response['data'][project_type]['projectV2']
     page_info = project_data['items']['pageInfo']

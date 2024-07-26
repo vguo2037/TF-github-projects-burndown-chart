@@ -3,7 +3,6 @@ from dateutil.parser import isoparse
 
 from config import config
 
-
 class Project:
     columns = None
 
@@ -43,7 +42,7 @@ class ProjectV2(Project):
             column_dict[option['name']] = []
 
         for item_data in project_data['items']['nodes']:
-            status = (item_data.get('fieldValueByName') or {}).get('name')
+            status = (item_data.get('status') or {}).get('name')
             column_dict[status].append(Card(item_data))
 
         columns = [Column(column_data) for column_data in column_dict.values()]
@@ -60,11 +59,12 @@ class Column:
 
 class Card:
     def __init__(self, card_data):
+        self.points = self.__parse_points(card_data)
+
         card_data = card_data['content'] if card_data['content'] else card_data
         self.created: datetime = self.__parse_createdAt(card_data)
         self.assigned: datetime = self.__parse_assignedAt(card_data)
         self.closed: datetime = self.__parse_closedAt(card_data)
-        self.points = self.__parse_points(card_data)
 
     def __parse_assignedAt(self, card_data) -> datetime:
         assignedAt = None
@@ -87,12 +87,10 @@ class Card:
 
     def __parse_points(self, card_data) -> int:
         card_points = 0
-        points_label = config['settings']['points_label']
+        points_label = card_data.get('storyPoints')
         if not points_label:
-            card_points = 1
+            card_points = 0
         else:
-            card_labels = card_data.get('labels', {"nodes": []})['nodes']
-            card_points = sum([int(label['name'][len(points_label):])
-                              for label in card_labels
-                              if points_label in label['name']])
+            card_points = points_label.get('number')
+
         return card_points
