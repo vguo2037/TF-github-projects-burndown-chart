@@ -1,0 +1,21 @@
+{
+  "organization": {
+    "TF-Real-Time-Digital-Replica-of-Traffic-Flow": {
+      "query_variables": {
+        "organization_name": "2024-SWN90017-18",
+        "project_number": 38,
+        "column_count": 6,
+        "max_cards_per_column_count": 50,
+        "labels_per_issue_count": 10
+      },
+      "settings": {
+        "sprint": "Sprint 4", // CHANGE THIS AND REMOVE THIS COMMENT
+        "sprint_start_date": "2024-07-22", // CHANGE THIS AND REMOVE THIS COMMENT
+        "sprint_end_date": "2024-08-11", // CHANGE THIS AND REMOVE THIS COMMENT
+        "points_label": "Story Points",
+        "calculators": ["closed", "assigned"],
+        "version": 2
+      }
+    }
+  }
+}
