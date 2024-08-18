@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable
 import matplotlib.pyplot as plt
 import os
+from pprint import pprint
 
 from util.dates import parse_to_local, date_range
 
@@ -37,8 +38,9 @@ class BurndownChartData:
 
 class BurndownChart:
 
-    def __init__(self, data: BurndownChartData):
+    def __init__(self, data: BurndownChartData, total_points):
         self.data: BurndownChartData = data
+        self.total_points = total_points
 
     def __prepare_chart(self):
         # Plot the data
@@ -56,8 +58,10 @@ class BurndownChart:
             )
         plt.legend()
 
+        plt.subplots_adjust(top=0.925, bottom=0.15)
+
         # Configure title and labels
-        plt.title(f"{self.data.sprint_name}: Burndown Chart")
+        plt.title(f"TF {self.data.sprint_name}: Burndown")
         plt.ylabel(self.data.points_label)
         plt.xlabel("Date")
 
@@ -67,7 +71,8 @@ class BurndownChart:
                  xmax=chart_dates.index(self.data.utc_chart_end))
 
         # Configure x-axis tick marks
-        date_labels = [str(parse_to_local(date))[:10] for date in chart_dates]
+        # date_labels = [str(parse_to_local(date))[:10] for date in chart_dates]
+        date_labels = [str(parse_to_local(date + timedelta(days=1)))[5:10] for date in chart_dates]
         plt.xticks(range(len(chart_dates)), date_labels)
         plt.xticks(rotation=90)
 

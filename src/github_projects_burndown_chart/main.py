@@ -9,14 +9,11 @@ from util import calculators, colors
 from util.stats import *
 from util.calculators import *
 
+from pprint import pprint
 
 def parse_cli_args():
     parser = argparse.ArgumentParser(
         description='Generate a burndown chart for a GitHub project.')
-    parser.add_argument("project_type", choices=['repository', 'organization'],
-                        help="The type of project to generate a burndown chart for. Can be either 'organization' or 'repository'.")
-    parser.add_argument("project_name",
-                        help="The name of the project as it appears in the config.json")
     parser.add_argument("--filepath",
                         help="The filepath where the burndown chart is saved.")
     parser.add_argument("--discord", action='store_true',
@@ -34,10 +31,10 @@ def download_project_data(project_type: str, project_version: int) -> Project:
         return get_organization_project()
 
 
-def prepare_chart_data(stats: ProjectStats):
+def prepare_chart_data(stats: ProjectStats, sprint_name):
     color = colors()
     data = BurndownChartData(
-        sprint_name=stats.project.name,
+        sprint_name=sprint_name,
         utc_chart_start=config.utc_sprint_start(),
         utc_chart_end=config.utc_chart_end() or config.utc_sprint_end(),
         utc_sprint_start=config.utc_sprint_start(),
@@ -58,12 +55,13 @@ def prepare_chart_data(stats: ProjectStats):
 
 if __name__ == '__main__':
     args = parse_cli_args()
-    config.set_project(args.project_type, args.project_name)
-    project = download_project_data(args.project_type, config['settings'].get('version', 1))
+    config.set_project("organization", "TF-Real-Time-Digital-Replica-of-Traffic-Flow")
+    project = download_project_data("organization", config['settings'].get('version', 1))
     stats = ProjectStats(project, config.utc_sprint_start(),
                          config.utc_chart_end() or config.utc_sprint_end())
     # Generate the burndown chart
-    burndown_chart = BurndownChart(prepare_chart_data(stats))
+    pprint(stats)
+    burndown_chart = BurndownChart(prepare_chart_data(stats, config['settings'].get("sprint")), stats.project.total_points)
     if args.discord:
         chart_path = "./tmp/chart.png"
         burndown_chart.generate_chart(chart_path)

@@ -6,6 +6,7 @@ def calculators(project: Project):
     return {
         'created': CreatedPointsCalculator(project.cards),
         'assigned': AssignedPointsCalculator(project.cards),
+        'Closed': ClosedPointsCalculator(project.cards),
         'closed': ClosedPointsCalculator(project.cards),
         'taiga': TaigaPointsCalculator(project.cards)
     }

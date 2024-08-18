@@ -2,6 +2,7 @@ from datetime import datetime
 from dateutil.parser import isoparse
 
 from config import config
+from pprint import pprint
 
 class Project:
     columns = None
@@ -45,13 +46,19 @@ class ProjectV2(Project):
             status = (item_data.get('status') or {}).get('name')
             column_dict[status].append(Card(item_data))
 
-        columns = [Column(column_data) for column_data in column_dict.values()]
+        columns = [Column(column_key, column_dict[column_key]) for column_key in column_dict.keys()]
+
+        pprint(column_dict)
         return columns
 
 
 class Column:
-    def __init__(self, cards):
+    def __init__(self, key, cards):
         self.cards = cards
+
+        if key == "Done":
+            for c in self.cards:
+                c.closed = c.closed if c.closed is not None else config.utc_sprint_end()
 
     def get_total_points(self):
         return sum([card.points for card in self.cards])
