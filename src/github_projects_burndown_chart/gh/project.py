@@ -48,7 +48,7 @@ class ProjectV2(Project):
 
         columns = [Column(column_key, column_dict[column_key]) for column_key in column_dict.keys()]
 
-        pprint(column_dict)
+        pprint([(f"{column_key}: {len(column_dict[column_key])}") for column_key in column_dict.keys()])
         return columns
 
 

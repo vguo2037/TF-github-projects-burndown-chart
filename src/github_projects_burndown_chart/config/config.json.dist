@@ -1,8 +1,8 @@
 {
   "organization": {
-    "TF-Real-Time-Digital-Replica-of-Traffic-Flow": {
+    "PROJECT NAME": {
       "query_variables": {
-        "organization_name": "2024-SWN90017-18",
+        "organization_name": "ORGANIZATION NAME", // CHANGE THIS AND REMOVE THIS COMMENT
         "project_number": 38,
         "column_count": 6,
         "max_cards_per_column_count": 50,
