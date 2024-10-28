@@ -1,6 +1,6 @@
 import logging
 import os
-import pprint
+from pprint import pprint
 import requests
 from datetime import date
 import hashlib
@@ -52,6 +52,7 @@ def get_project_v2(project_type) -> Project:
     if query_sprint is not None:
         all_items = project_data['items']['nodes']
         project_data['items']['nodes'] = filter(lambda i: i.get('sprint') and i.get('sprint')['title'] == query_sprint, all_items)
+        project_data['items']['nodes'] = list(project_data['items']['nodes'])
 
     page_info = project_data['items']['pageInfo']
     while page_info['hasNextPage']:
